@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Data;
-using TuProyecto.Models;
+using GimnasioFITLAB.Data;
+using GimnasioFITLAB.Models;
 
-namespace TuProyecto.Controllers
+namespace GimnasioFITLAB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

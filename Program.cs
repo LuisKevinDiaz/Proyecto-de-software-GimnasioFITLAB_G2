@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Data;
+using GimnasioFITLAB.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
