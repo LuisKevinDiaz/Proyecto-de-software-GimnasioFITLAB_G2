@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TuProyecto.Data;
+using GimnasioFITLAB.Data;
 
 #nullable disable
 
-namespace TuProyecto.Migrations
+namespace GimnasioFITLAB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace TuProyecto.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TuProyecto.Models.Miembro", b =>
+            modelBuilder.Entity("GimnasioFITLAB.Models.Miembro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

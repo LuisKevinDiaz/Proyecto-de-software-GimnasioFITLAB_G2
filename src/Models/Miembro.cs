@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TuProyecto.Models
+namespace GimnasioFITLAB.Models
 {
     public class Miembro
     {

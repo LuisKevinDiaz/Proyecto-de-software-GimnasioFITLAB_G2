@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Models;
+using GimnasioFITLAB.Models;
 
-namespace TuProyecto.Data
+namespace GimnasioFITLAB.Data
 {
     public class AppDbContext : DbContext
     {
