@@ -1,0 +1,27 @@
+using Microsoft.EntityFrameworkCore;
+using TuProyecto.Data;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Controladores
+builder.Services.AddControllers();
+
+// OpenAPI nativo de .NET 9 
+builder.Services.AddOpenApi();
+
+// Conexión a la base de datos (SQL Server)
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
