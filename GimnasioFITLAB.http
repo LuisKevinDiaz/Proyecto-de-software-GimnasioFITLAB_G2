@@ -1,6 +1,29 @@
 @GimnasioFITLAB_HostAddress = http://localhost:5266
 
-GET {{GimnasioFITLAB_HostAddress}}/weatherforecast/
+### HU02: coincidencia parcial por nombre
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/buscar?termino=Ana
 Accept: application/json
 
-###
+### HU02: cédula exacta con guiones (dato ficticio)
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/buscar?termino=001-1234567-8
+Accept: application/json
+
+### HU02: la misma cédula sin guiones
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/buscar?termino=00112345678
+Accept: application/json
+
+### HU02: sin coincidencias, si este término no existe en la base
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/buscar?termino=HU02_SIN_COINCIDENCIAS
+Accept: application/json
+
+### HU02: término vacío, debe responder 400
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/buscar?termino=
+Accept: application/json
+
+### Perfil existente: usar un ID devuelto por la búsqueda
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros/1
+Accept: application/json
+
+### Listado existente (contrato sin cambios)
+GET {{GimnasioFITLAB_HostAddress}}/api/miembros
+Accept: application/json
