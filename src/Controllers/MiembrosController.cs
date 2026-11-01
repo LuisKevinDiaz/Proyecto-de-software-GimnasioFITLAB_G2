@@ -57,6 +57,42 @@ namespace GimnasioFITLAB.Controllers
             return CreatedAtAction(nameof(ObtenerPorId), new { id = miembro.Id }, miembro);
         }
 
+        // HU02: consulta de solo lectura; conserva los contratos de registro y listado.
+        [HttpGet("buscar")]
+        public async Task<IActionResult> Buscar(
+            [FromQuery] string? termino,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(termino) || termino.Trim().Length > 100)
+            {
+                return BadRequest(new { mensaje = "Indica un nombre o cédula de entre 1 y 100 caracteres." });
+            }
+
+            string texto = termino.Trim();
+            string cedula = texto.Replace("-", "");
+            const int limite = 100;
+
+            // El filtro y el límite se ejecutan en SQL, antes de cargar los resultados.
+            var miembros = await _context.Miembros
+                .AsNoTracking()
+                .Where(m => m.Nombre.Contains(texto) || m.Cedula == cedula)
+                .OrderBy(m => m.Nombre)
+                .ThenBy(m => m.Id)
+                .Take(limite + 1)
+                .ToListAsync(cancellationToken);
+
+            bool hayMasResultados = miembros.Count > limite;
+            if (hayMasResultados) miembros.RemoveAt(limite);
+
+            return Ok(new
+            {
+                miembros,
+                mensaje = miembros.Count == 0 ? "No se encontraron miembros" : null,
+                ofrecerRegistro = miembros.Count == 0,
+                hayMasResultados
+            });
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPorId(int id)
         {
