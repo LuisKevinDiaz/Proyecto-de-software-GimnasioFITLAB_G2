@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Controladores
 builder.Services.AddControllers();
+builder.Services.AddScoped<GimnasioFITLAB.Services.PagoService>();
 
 // OpenAPI nativo de .NET 9 
 builder.Services.AddOpenApi();
