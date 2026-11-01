@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<GimnasioFITLAB.Services.RenovacionService>();
 
+builder.Services.AddScoped<GimnasioFITLAB.Services.MiembroBajaService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -28,5 +30,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
 

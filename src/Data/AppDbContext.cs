@@ -22,6 +22,9 @@ namespace GimnasioFITLAB.Data
                 .HasIndex(m => m.CodigoUnico)
                 .IsUnique();
 
+            // Los miembros que ya existen quedan activos
+            modelBuilder.Entity<Miembro>().Property(m => m.Activo).HasDefaultValue(true);
+
             var membresia = modelBuilder.Entity<Membresia>();
             membresia.HasKey(m => m.Id);
             membresia.HasIndex(m => m.MiembroId).IsUnique();
@@ -45,5 +48,6 @@ namespace GimnasioFITLAB.Data
         }
     }
 }
+
 
 

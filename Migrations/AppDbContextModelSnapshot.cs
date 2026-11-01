@@ -55,6 +55,11 @@ namespace GimnasioFITLAB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Cedula")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -67,10 +72,16 @@ namespace GimnasioFITLAB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EmpleadoBajaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EmpleadoRegistroId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaBaja")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")

@@ -30,5 +30,10 @@ namespace GimnasioFITLAB.Models
         public int EmpleadoRegistroId { get; set; } 
         
         public DateTime FechaAlta { get; set; } = DateTime.Now;
+
+        // Baja logica: el miembro no se borra, solo pasa a inactivo
+        public bool Activo { get; set; } = true;
+        public DateTime? FechaBaja { get; set; }
+        public int? EmpleadoBajaId { get; set; }
     }
 }

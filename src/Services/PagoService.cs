@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GimnasioFITLAB.Services;
 
-public enum EstadoRegistroPago { Creado, Repetido, Conflicto, MiembroInexistente }
+public enum EstadoRegistroPago { Creado, Repetido, Conflicto, MiembroInexistente, MiembroInactivo }
 public record ResultadoRegistroPago(EstadoRegistroPago Estado, PagoDto? Pago = null);
 
 public class PagoService(AppDbContext context)
@@ -35,6 +35,7 @@ public class PagoService(AppDbContext context)
 
         var miembro = await context.Miembros.AsNoTracking().SingleOrDefaultAsync(m => m.Id == dto.MiembroId, ct);
         if (miembro == null) return new(EstadoRegistroPago.MiembroInexistente);
+        if (!miembro.Activo) return new(EstadoRegistroPago.MiembroInactivo);
 
         var pago = new Pago
         {
@@ -78,3 +79,4 @@ public class PagoService(AppDbContext context)
         return pagos.Select(PagoDto.Desde).ToList();
     }
 }
+

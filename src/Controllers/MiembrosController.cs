@@ -66,6 +66,6 @@ namespace GimnasioFITLAB.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Listar() =>
-            Ok(await _context.Miembros.OrderByDescending(m => m.FechaAlta).ToListAsync());
+            Ok(await _context.Miembros.Where(m => m.Activo).OrderByDescending(m => m.FechaAlta).ToListAsync());
     }
 }

@@ -20,6 +20,7 @@ public class PagosController(PagoService service) : ControllerBase
             EstadoRegistroPago.Repetido => Ok(resultado.Pago),
             EstadoRegistroPago.Conflicto => Conflict(new { mensaje = "La clave de idempotencia ya fue utilizada con datos diferentes." }),
             EstadoRegistroPago.MiembroInexistente => NotFound(new { mensaje = "No se encontró el miembro." }),
+            EstadoRegistroPago.MiembroInactivo => Conflict(new { mensaje = "El miembro esta inactivo." }),
             _ => throw new InvalidOperationException()
         };
     }
@@ -43,3 +44,4 @@ public class PagosController(PagoService service) : ControllerBase
         return Ok(new { pagos = pagos.Take(tamanoPagina), pagina, tamanoPagina, hayMasResultados = pagos.Count > tamanoPagina });
     }
 }
+
