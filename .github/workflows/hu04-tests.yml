@@ -1,0 +1,44 @@
+name: HU04 - Compilacion y pruebas
+
+on:
+  push:
+    branches: [feature/HU04-integracion]
+  pull_request:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Preparar .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Restaurar dependencias
+        run: dotnet restore tests/FITLAB-HU04-Tests/FITLAB-HU04-Tests.csproj
+      - name: Compilar API y pruebas
+        run: dotnet build tests/FITLAB-HU04-Tests/FITLAB-HU04-Tests.csproj --configuration Release --no-restore
+      - name: Ejecutar pruebas
+        run: dotnet test tests/FITLAB-HU04-Tests/FITLAB-HU04-Tests.csproj --configuration Release --no-build --no-restore --logger trx --results-directory TestResults
+      - name: Verificar publicacion de la API sin archivos de pruebas
+        shell: bash
+        run: |
+          dotnet publish TuProyecto.csproj --configuration Release --no-build --no-restore --output "$RUNNER_TEMP/fitlab-publish"
+          if [ -d "$RUNNER_TEMP/fitlab-publish/tests" ]; then
+            echo 'Error: la publicacion de la API contiene la carpeta tests.'
+            exit 1
+          fi
+      - name: Guardar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hu04-resultados
+          path: TestResults/*.trx
+          if-no-files-found: ignore
