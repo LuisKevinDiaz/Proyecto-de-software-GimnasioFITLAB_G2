@@ -30,8 +30,10 @@ public class BajasController(MiembroBajaService service) : ControllerBase
                 fechaBaja = r.Miembro.FechaBaja,
                 empleadoBajaId = r.Miembro.EmpleadoBajaId
             }),
+            EstadoBaja.NoAutorizado => StatusCode(403, new { mensaje = "El empleado no esta autorizado para dar de baja." }),
             EstadoBaja.NoExiste => NotFound(new { mensaje = "No se encontro el miembro." }),
             _ => Conflict(new { mensaje = "El miembro ya esta inactivo." })
         };
     }
 }
+
