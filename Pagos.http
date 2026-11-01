@@ -1,0 +1,40 @@
+@host = http://localhost:5266
+@miembroId = 1
+@pagoId = 00000000-0000-0000-0000-000000000000
+@clave = 4af63d46-d597-4e76-b51f-d74539c5891c
+
+### SOLO BASE DE PRUEBAS: importe, moneda y método ilustrativos, no son una tarifa ni un catálogo oficial.
+### Conservar la clave al reintentar; generar una nueva UUID para una operación distinta.
+POST {{host}}/api/pagos
+Content-Type: application/json
+
+{
+  "miembroId": {{miembroId}},
+  "importe": 123.45,
+  "moneda": "USD",
+  "metodoPago": "METODO_DE_PRUEBA",
+  "referenciaExterna": null,
+  "empleadoRegistroId": 1,
+  "claveIdempotencia": "{{clave}}"
+}
+
+### Copiar pagoId de la respuesta del registro
+GET {{host}}/api/pagos/{{pagoId}}
+Accept: application/json
+
+### Historial (20 por página, máximo 100)
+GET {{host}}/api/miembros/{{miembroId}}/pagos?pagina=1&tamanoPagina=20
+Accept: application/json
+
+### Importe inválido: debe devolver 400 sin guardar
+POST {{host}}/api/pagos
+Content-Type: application/json
+
+{
+  "miembroId": {{miembroId}},
+  "importe": -1,
+  "moneda": "USD",
+  "metodoPago": "METODO_DE_PRUEBA",
+  "empleadoRegistroId": 1,
+  "claveIdempotencia": "{{clave}}"
+}
