@@ -9,6 +9,7 @@ namespace GimnasioFITLAB.Data
 
         public DbSet<Miembro> Miembros { get; set; }
         public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Membresia> Membresias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,12 @@ namespace GimnasioFITLAB.Data
                 .HasIndex(m => m.CodigoUnico)
                 .IsUnique();
 
+            var membresia = modelBuilder.Entity<Membresia>();
+            membresia.HasKey(m => m.Id);
+            membresia.HasIndex(m => m.MiembroId).IsUnique();
+            membresia.HasOne(m => m.Miembro).WithMany().HasForeignKey(m => m.MiembroId)
+                .OnDelete(DeleteBehavior.Restrict);
+    
             var pago = modelBuilder.Entity<Pago>();
             pago.HasKey(p => p.Id);
             pago.Property(p => p.Id).ValueGeneratedNever();
@@ -38,3 +45,5 @@ namespace GimnasioFITLAB.Data
         }
     }
 }
+
+

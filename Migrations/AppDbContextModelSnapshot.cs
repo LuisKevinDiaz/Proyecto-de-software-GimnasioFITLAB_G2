@@ -22,6 +22,31 @@ namespace GimnasioFITLAB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GimnasioFITLAB.Models.Membresia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("Inicio")
+                        .HasColumnType("date");
+
+                    b.Property<int>("MiembroId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Vencimiento")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MiembroId")
+                        .IsUnique();
+
+                    b.ToTable("Membresias");
+                });
+
             modelBuilder.Entity("GimnasioFITLAB.Models.Miembro", b =>
                 {
                     b.Property<int>("Id")
@@ -72,6 +97,9 @@ namespace GimnasioFITLAB.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Aplicado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CedulaMiembro")
                         .IsRequired()
                         .HasMaxLength(450)
@@ -87,6 +115,9 @@ namespace GimnasioFITLAB.Migrations
 
                     b.Property<int>("EmpleadoRegistroId")
                         .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("FechaAplicacionUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset>("FechaRegistroUtc")
                         .HasColumnType("datetimeoffset");
@@ -127,6 +158,17 @@ namespace GimnasioFITLAB.Migrations
                         {
                             t.HasCheckConstraint("CK_Pagos_ImportePositivo", "[Importe] > 0");
                         });
+                });
+
+            modelBuilder.Entity("GimnasioFITLAB.Models.Membresia", b =>
+                {
+                    b.HasOne("GimnasioFITLAB.Models.Miembro", "Miembro")
+                        .WithMany()
+                        .HasForeignKey("MiembroId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Miembro");
                 });
 
             modelBuilder.Entity("GimnasioFITLAB.Models.Pago", b =>
