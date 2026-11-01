@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Data;
-using TuProyecto.Models;
+using GimnasioFITLAB.Data;
+using GimnasioFITLAB.Models;
 
-namespace TuProyecto.Controllers
+namespace GimnasioFITLAB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -66,6 +66,6 @@ namespace TuProyecto.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Listar() =>
-            Ok(await _context.Miembros.OrderByDescending(m => m.FechaAlta).ToListAsync());
+            Ok(await _context.Miembros.Where(m => m.Activo).OrderByDescending(m => m.FechaAlta).ToListAsync());
     }
 }

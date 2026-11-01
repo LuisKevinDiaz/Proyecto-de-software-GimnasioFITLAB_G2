@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TuProyecto.Data;
+using GimnasioFITLAB.Data;
 
 #nullable disable
 
-namespace TuProyecto.Migrations
+namespace GimnasioFITLAB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20261031211726_InitialCreate")]
@@ -25,7 +25,7 @@ namespace TuProyecto.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TuProyecto.Models.Miembro", b =>
+            modelBuilder.Entity("GimnasioFITLAB.Models.Miembro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
