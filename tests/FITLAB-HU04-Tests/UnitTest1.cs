@@ -5,7 +5,7 @@ using Xunit;
 
 public class CalculoVigenciaTests
 {
-    // 6 pruebas de meses calendario
+    // Pruebas de meses calendario
     [Theory]
     [InlineData("2024-01-31", 1, "2024-02-29")]
     [InlineData("2025-01-31", 1, "2025-02-28")]
@@ -13,6 +13,7 @@ public class CalculoVigenciaTests
     [InlineData("2025-04-30", 1, "2025-05-30")]
     [InlineData("2025-12-31", 1, "2026-01-31")]
     [InlineData("2026-02-28", 12, "2027-02-28")]
+    [InlineData("2027-01-31", 1, "2027-02-28")]
     public void CalculaVencimientoCorrectamente(
         string fecha, int meses, string esperado)
     {
@@ -35,11 +36,11 @@ public class CalculoVigenciaTests
 
     // Renovación anticipada
     [Fact]
-    public void RenovacionAnticipada()
+    public void RenovacionAnticipadaSegunCriterioDeJira()
     {
         var resultado = CalculoVigenciaService.CalcularPeriodo(
             new DateOnly(2026, 11, 10),
-            new DateOnly(2026, 11, 1));
+            new DateOnly(2026, 11, 5));
 
         Assert.Equal(new DateOnly(2026, 11, 10), resultado.Inicio);
         Assert.Equal(new DateOnly(2026, 12, 10), resultado.Vencimiento);
