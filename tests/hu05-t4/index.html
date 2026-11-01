@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FITLAB · Pruebas HU05-T4</title>
+    <!-- Estilos exclusivos del informe de pruebas; no forman parte del componente. -->
+    <style>
+        body { font: 16px/1.5 system-ui, sans-serif; max-width: 900px; margin: 36px auto; padding: 0 20px; }
+        h1 { font-size: 1.6rem; } li { margin: 6px 0; }
+        [data-resultado="aprobado"] { color: #11643b; }
+        [data-resultado="fallido"] { color: #b12020; }
+        #resumen { font-weight: 600; }
+    </style>
+</head>
+<body>
+    <h1>FITLAB · Pruebas HU05-T4</h1>
+    <p>Pruebas del botón en el navegador con adaptadores simulados. No modifican miembros ni una base de datos.</p>
+    <p id="resumen" role="status">Ejecutando pruebas…</p>
+    <p><a href="./demo.html">Revisar manualmente el botón con datos simulados</a></p>
+    <ol id="resultados"></ol>
+    <div id="escenario" aria-label="Escenario temporal de pruebas"></div>
+    <script type="module" src="./boton-baja.test.js"></script>
+</body>
+</html>
