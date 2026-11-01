@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FITLAB · Revisión HU05-T4</title>
+    <style>
+        /* Presentación del banco de revisión, no del diseño definitivo. */
+        body { font: 16px/1.6 system-ui, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 20px; }
+        label { display: block; margin: 16px 0; }
+        button, select { font: inherit; }
+        fieldset { margin: 24px 0; }
+    </style>
+</head>
+<body>
+    <h1>Revisión del botón «Dar de baja»</h1>
+    <p>HU05-T4 · Datos y servicios simulados. Esta muestra no modifica miembros reales y no define el diseño de Geisi.</p>
+    <fieldset>
+        <legend>Controles de la muestra</legend>
+        <label><input id="permiso" type="checkbox"> Simular personal autorizado</label>
+        <label>Resultado simulado:
+            <select id="resultado">
+                <option value="exito">Confirmar y recibir éxito</option>
+                <option value="cancelar">Cancelar en T5</option>
+                <option value="error">Confirmar y recibir error</option>
+            </select>
+        </label>
+        <button id="reiniciar" type="button">Reiniciar muestra</button>
+    </fieldset>
+    <h2>Miembro de prueba</h2>
+    <p>Estado: <strong id="estado">Activo</strong></p>
+    <button id="baja" type="button" hidden disabled>Dar de baja</button>
+    <p id="mensaje" role="status">El botón está oculto hasta habilitar el permiso simulado.</p>
+    <p><a href="./">Ver las pruebas automáticas</a></p>
+    <script type="module">
+        import { conectarBotonBaja } from "../../frontend/hu05/boton-baja.js";
+
+        const boton = document.querySelector("#baja");
+        const permiso = document.querySelector("#permiso");
+        const resultado = document.querySelector("#resultado");
+        const estado = document.querySelector("#estado");
+        const mensaje = document.querySelector("#mensaje");
+        const esperar = () => new Promise(resolve => setTimeout(resolve, 400));
+        let conexion;
+
+        function montar() {
+            conexion = conectarBotonBaja(boton, {
+                miembroId: 7,
+                autorizado: permiso.checked,
+                activo: true,
+                // Simulación del resultado de T5, sin construir su ventana.
+                confirmarBaja: async () => {
+                    await esperar();
+                    return resultado.value !== "cancelar";
+                },
+                solicitarBaja: async () => {
+                    await esperar();
+                    return resultado.value === "error"
+                        ? { exito: false, mensaje: "Error simulado. El miembro sigue activo." }
+                        : { exito: true, estado: "inactivo" };
+                }
+            });
+        }
+        boton.addEventListener("hu05:baja-estado", e => {
+            mensaje.textContent = e.detail.mensaje;
+            if (e.detail.tipo === "exito") estado.textContent = "Inactivo";
+        });
+        permiso.addEventListener("change", () => {
+            conexion.actualizar({ autorizado: permiso.checked });
+            mensaje.textContent = permiso.checked
+                ? "Permiso simulado habilitado." : "Botón oculto: sin permiso.";
+        });
+        document.querySelector("#reiniciar").addEventListener("click", () => {
+            conexion.destruir();
+            estado.textContent = "Activo";
+            mensaje.textContent = "Muestra reiniciada. No se ha realizado ninguna baja real.";
+            montar();
+        });
+        montar();
+    </script>
+</body>
+</html>
