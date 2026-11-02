@@ -1,0 +1,26 @@
+@host = http://localhost:5266
+@miembroId = 1
+
+### Ejecutar solo con un miembro de prueba. PUT requiere ambos datos de contacto.
+PUT {{host}}/api/miembros/{{miembroId}}/contacto
+Content-Type: application/json
+
+{
+  "telefono": "829-555-0102",
+  "correo": "contacto@example.invalid",
+  "empleadoModificacionId": 7
+}
+
+### Consultar el perfil tras el cambio
+GET {{host}}/api/miembros/{{miembroId}}
+
+### Debe devolver 400: campos fuera del contrato
+PUT {{host}}/api/miembros/{{miembroId}}/contacto
+Content-Type: application/json
+
+{
+  "telefono": "829-555-0102",
+  "correo": "contacto@example.invalid",
+  "empleadoModificacionId": 7,
+  "cedula": "00112345678"
+}
